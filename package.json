@@ -1,0 +1,11 @@
+{
+  "name": "fs-web",
+  "version": "1.0.0",
+  "description": "Fraud service Web UI Component",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha $(find . -name '*.spec.js')"
+  },
+  "author": "Sem Onyalo",
+  "license": "ISC"
+}
