@@ -1,7 +1,9 @@
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ViewManager from './viewmanager';
 
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <ViewManager/>,
   document.getElementById('root')
 );
