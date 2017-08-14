@@ -78,7 +78,7 @@ describe('RestApiClient', () => {
       requestStub.restore();
 
       sinon.assert.calledOnce(requestStub);
-      sinon.assert.calledWith(requestStub, uri, authHeader, jsonContentType, jsonContent);
+      sinon.assert.calledWith(requestStub, uri, authHeader, jsonContentType, JSON.stringify(jsonContent));
     });
   });
 });

@@ -10,6 +10,7 @@ export default class ViewManager extends React.Component {
     this._restApiClient = new RestApiClient();
 
     this.getRuleSets = this.getRuleSets.bind(this);
+    this.saveRuleSet = this.saveRuleSet.bind(this);
   }
 
   async getRuleSets() {
@@ -18,10 +19,17 @@ export default class ViewManager extends React.Component {
     return getResponseJson.rulesets;
   }
 
+  async saveRuleSet(request) {
+    let auth = undefined;
+    let requestBody = { Name: request.Name, StopProcessingOnFail: request.StopProcessingOnFail };
+    let postResponse = await this._restApiClient.postJsonRequest(Config.FsApiUri + '/rulesets', auth, requestBody);
+    return postResponse;
+  }
+
   render() {
     return (
       <div>
-        <RuleSetView onInit={this.getRuleSets}/>
+        <RuleSetView onInit={this.getRuleSets} onSubmit={this.saveRuleSet}/>
       </div>
     );
   }

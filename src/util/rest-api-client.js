@@ -24,7 +24,7 @@ module.exports = class RestApiClient {
    * @param {string} content - The request JSON string.
    */
   async postJsonRequest(uri, auth, content) {
-    let response = await this.postRequest(uri, auth, 'application/json', content);
+    let response = await this.postRequest(uri, auth, 'application/json', JSON.stringify(content));
     return response;
   }
 

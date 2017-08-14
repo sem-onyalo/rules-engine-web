@@ -4,5 +4,16 @@ body {
 
 .root {
   padding: 40px 15px;
-  text-align: center;
+}
+
+.response-message {
+  font-size: 1.2em;
+}
+
+.response-message.success {
+  color: green;
+}
+
+.response-message.failure {
+  color: red;
 }

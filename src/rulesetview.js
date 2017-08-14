@@ -14,6 +14,7 @@ export default class RuleSetView extends React.Component {
   }
 
   addRuleSet(name) {
+    this.props.onSubmit({ Name: name, StopProcessingOnFail: true }); // hardcode StopProcessingOnFail for now
     this.setState({
       ruleSets: [].concat(this.state.ruleSets).concat([name])
     });
@@ -44,5 +45,6 @@ export default class RuleSetView extends React.Component {
 }
 
 RuleSetView.PropTypes = {
-  onInit: React.PropTypes.func.isRequired
+  onInit: React.PropTypes.func.isRequired,
+  onSubmit: React.PropTypes.func.isRequired
 };
