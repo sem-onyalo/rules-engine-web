@@ -35,7 +35,7 @@ export default class RuleSetView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container-fluid">
         <AddRuleSet onSubmit={this.addRuleSet}/>
         <ListRuleSets items={this.state.ruleSets}/>
       </div>

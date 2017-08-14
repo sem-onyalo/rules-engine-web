@@ -24,9 +24,10 @@ describe('<RuleSetView/>', () => {
     expect(wrapper.state('ruleSets')).to.eql([]);
   });
 
-  it('should init rule sets from data retrieved from server', () => {
-    let getRuleSetsStub = stub().returns([{ Id: 1, Name: 'Rule Set A' }, { Id: 2, Name: 'Rule Set B' }]);
-    let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub}/>);
+  it('should init rule sets from data retrieved from server', async () => {
+    let ruleSets = [{ Id: 1, Name: 'Rule Set A' }, { Id: 2, Name: 'Rule Set B' }];
+    let getRuleSetsStub = stub().returns(Promise.resolve(ruleSets));
+    let wrapper = await shallow(<RuleSetView onInit={getRuleSetsStub}/>);
 
     expect(wrapper.state('ruleSets')).to.eql(['Rule Set A', 'Rule Set B']);
   });
