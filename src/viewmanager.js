@@ -13,7 +13,9 @@ export default class ViewManager extends React.Component {
   }
 
   async getRuleSets() {
-    return await this._restApiClient.getRequest(Config.FsApiUri + '/rulesets');
+    let getResponse = await this._restApiClient.getRequest(Config.FsApiUri + '/rulesets');
+    let getResponseJson = JSON.parse(getResponse);
+    return getResponseJson.rulesets;
   }
 
   render() {

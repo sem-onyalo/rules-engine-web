@@ -19,15 +19,13 @@ export default class RuleSetView extends React.Component {
     });
   }
 
-  initRuleSets() {
-    let ruleSets = this.props.onInit();
-    if (ruleSets) {
-      if (ruleSets && ruleSets.length > 0) {
-        this.setState({
-          ruleSets: [].concat(this.state.ruleSets)
-            .concat(ruleSets.map((item) => item.Name))
-        });
-      }
+  async initRuleSets() {
+    let ruleSets = await this.props.onInit();
+    if (ruleSets && ruleSets.length > 0) {
+      this.setState({
+        ruleSets: [].concat(this.state.ruleSets)
+          .concat(ruleSets.map((item) => item.Name))
+      });
     }
   }
 
