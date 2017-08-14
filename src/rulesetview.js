@@ -13,10 +13,10 @@ export default class RuleSetView extends React.Component {
     this.initRuleSets = this.initRuleSets.bind(this);
   }
 
-  addRuleSet(name) {
-    this.props.onSubmit({ Name: name, StopProcessingOnFail: true }); // hardcode StopProcessingOnFail for now
+  async addRuleSet(name) {
+    let ruleSet = await this.props.onSubmit({ Name: name, StopProcessingOnFail: true }); // hardcode StopProcessingOnFail for now
     this.setState({
-      ruleSets: [].concat(this.state.ruleSets).concat([name])
+      ruleSets: [].concat(this.state.ruleSets).concat([[ruleSet.Id, ruleSet.Name]])
     });
   }
 
@@ -25,7 +25,7 @@ export default class RuleSetView extends React.Component {
     if (ruleSets && ruleSets.length > 0) {
       this.setState({
         ruleSets: [].concat(this.state.ruleSets)
-          .concat(ruleSets.map((item) => item.Name))
+          .concat(ruleSets.map((item) => [item.Id, item.Name]))
       });
     }
   }

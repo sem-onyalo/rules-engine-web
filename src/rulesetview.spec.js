@@ -33,18 +33,20 @@ describe('<RuleSetView/>', () => {
     let ruleSets = [{ Id: 1, Name: 'Rule Set A' }, { Id: 2, Name: 'Rule Set B' }];
     let getRuleSetsStub = stub().returns(Promise.resolve(ruleSets));
     let wrapper = await shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
-    expect(wrapper.state('ruleSets')).to.eql(['Rule Set A', 'Rule Set B']);
+    expect(wrapper.state('ruleSets')).to.eql([[1 ,'Rule Set A'],[2, 'Rule Set B']]);
   });
 
-  it('adds rule sets to the list', () => {
+  it('adds rule sets to the list', async () => {
     let getRuleSetsStub = stub().returns([]);
+    saveRuleSetStub = stub().returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
-    wrapper.instance().addRuleSet('Rule Set A');
-    expect(wrapper.state('ruleSets')).to.eql(['Rule Set A']);
+    await wrapper.instance().addRuleSet('Rule Set A');
+    expect(wrapper.state('ruleSets')).to.eql([[1 ,'Rule Set A']]);
   });
 
   it('should add rule set to server', () => {
     let getRuleSetsStub = stub().returns([]);
+    saveRuleSetStub = stub().returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     wrapper.instance().addRuleSet('Rule Set A');
     expect(saveRuleSetStub.calledWith({ Name: 'Rule Set A', StopProcessingOnFail: true })).to.equal(true);
@@ -58,19 +60,22 @@ describe('<RuleSetView/>', () => {
     expect(addRuleSet.prop('onSubmit')).to.eql(addRuleSetFunc);
   });
 
-  it('passes a bound addRuleSet function to AddRuleSet', () => {
+  it('passes a bound addRuleSet function to AddRuleSet', async () => {
     let getRuleSetsStub = stub().returns([]);
+    saveRuleSetStub = stub().returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     let addRuleSet = wrapper.find(AddRuleSet);
-    addRuleSet.prop('onSubmit')('Rule Set A');
-    expect(wrapper.state('ruleSets')).to.eql(['Rule Set A']);
+    await addRuleSet.prop('onSubmit')('Rule Set A');
+    expect(wrapper.state('ruleSets')).to.eql([[1 ,'Rule Set A']]);
   });
 
-  it('renders the items', () => {
+  it('renders the items', async () => {
     let getRuleSetsStub = stub().returns([]);
+    saveRuleSetStub.onCall(0).returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
+    saveRuleSetStub.onCall(1).returns(Promise.resolve({ Id: 2, Name: 'Rule Set B' }));
     let wrapper = mount(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
-    wrapper.instance().addRuleSet('Rule Set A');
-    wrapper.instance().addRuleSet('Rule Set B');
+    await wrapper.instance().addRuleSet('Rule Set A');
+    await wrapper.instance().addRuleSet('Rule Set B');
     expect(wrapper.find('li').length).to.equal(2);
   });
 });

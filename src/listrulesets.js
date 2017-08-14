@@ -5,7 +5,7 @@ export default class ListRuleSets extends React.Component {
     return this.props.items ?
       (<ul className="list-group">
         {this.props.items.map((item, index) => (
-          <li key={index} className="list-group-item">{item}</li>
+          <li key={index} className="list-group-item" data-rule-set-id={item[0]}>{item[1]}</li>
         ))}
       </ul>)
     : null;
