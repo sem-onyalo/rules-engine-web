@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import AddRuleSet from './addruleset';
-import Config from './config';
 import ListRuleSets from './listrulesets';
 
 export default class RuleSetView extends React.Component {

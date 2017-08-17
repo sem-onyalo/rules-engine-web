@@ -6,6 +6,10 @@ body {
   padding: 40px 15px;
 }
 
+.row {
+  padding: 5px 0;
+}
+
 .response-message {
   font-size: 1.2em;
 }
@@ -16,4 +20,8 @@ body {
 
 .response-message.failure {
   color: red;
+}
+
+.rules-container {
+  padding: 20px 5px;
 }

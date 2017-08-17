@@ -1,9 +1,9 @@
 import React from 'react';
+import AddRule from './addrule';
+import RuleEmail from './rule/ruleemail';
 import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import {spy} from 'sinon';
-
-import AddRule from './addrule';
 
 describe('<AddRule/>', () => {
   it('should have a text input for the score', () => {
@@ -46,6 +46,16 @@ describe('<AddRule/>', () => {
     let input = wrapper.find('input[type="checkbox"]');
     input.simulate('change', { target: { checked: true } });
     expect(wrapper.state('emailOnFail')).to.equal(true);
+  });
+
+  it('should load RuleEmail component when the value in state changes to true', () => {
+    let wrapper = mount(<AddRule/>);
+    let input = wrapper.find('input[type="checkbox"]');
+    input.simulate('change', { target: { checked: true } });
+    wrapper.update();
+    expect(wrapper.containsAllMatchingElements([
+      <RuleEmail/>
+    ])).to.equal(true);
   });
 
   it('should save rule type in state when changed', () => {

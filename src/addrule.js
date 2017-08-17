@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import RuleEmail from './rule/ruleemail';
 
 export default class AddRule extends React.Component {
   constructor(props) {
@@ -36,28 +37,37 @@ export default class AddRule extends React.Component {
     });
   }
 
+  renderRuleEmail() {
+    if (this.state.emailOnFail) {
+      return <RuleEmail />;
+    }
+  }
+
   render() {
     let parentRuleId = this.props.parentRuleId ? this.props.parentRuleId : '0';
     return (
-      <div className="form-group row">
-        <div className="col-md-8">
-          <select className="form-control" onChange={this.setRuleType}>
-            <option value="1">Acount Locked</option>
-            <option value="2">Email Blocklist</option>
-            <option value="3">Score Threshold</option>
-            <option value="4">Different Email</option>
-            <option value="5">Source IP</option>
-            <option value="6">Orders Created</option>
-            <option value="7">Requests from IP</option>
-          </select>
-          <input type="checkbox" onChange={this.setEmailOnFail} />&nbsp;<span>Email when rule fails</span>
+      <div className="form-group">
+        <div className="row">
+          <div className="col-md-8">
+            <select className="form-control" onChange={this.setRuleType}>
+              <option value="1">Acount Locked</option>
+              <option value="2">Email Blocklist</option>
+              <option value="3">Score Threshold</option>
+              <option value="4">Different Email</option>
+              <option value="5">Source IP</option>
+              <option value="6">Orders Created</option>
+              <option value="7">Requests from IP</option>
+            </select>
+            <input type="checkbox" onChange={this.setEmailOnFail} />&nbsp;<span>Send email when rule fails</span>
+          </div>
+          <div className="col-md-2">
+            <input className="form-control" type="text" onChange={this.setRuleScore} placeholder="Rule score"/>
+          </div>
+          <div className="col-md-2">
+            <button className="btn btn-success btn-block" onClick={this.handleAddRuleClick}>Add Rule</button>
+          </div>
         </div>
-        <div className="col-md-2">
-          <input className="form-control" type="text" onChange={this.setRuleScore}/>
-        </div>
-        <div className="col-md-2">
-          <button className="btn btn-success btn-block" onClick={this.handleAddRuleClick}>Add Rule</button>
-        </div>
+        {this.renderRuleEmail()}
       </div>
     );
   }
