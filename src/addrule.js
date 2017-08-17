@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react';
+import RuleType from './model/ruletype';
 import RuleEmail from './rule/ruleemail';
+import RuleCountry from './rule/rulecountry';
 
 export default class AddRule extends React.Component {
   constructor(props) {
@@ -14,6 +16,8 @@ export default class AddRule extends React.Component {
     this.setRuleType = this.setRuleType.bind(this);
     this.setRuleScore = this.setRuleScore.bind(this);
     this.setEmailOnFail = this.setEmailOnFail.bind(this);
+    this.renderRuleEmail = this.renderRuleEmail.bind(this);
+    this.renderRuleCountry = this.renderRuleCountry.bind(this);
     this.handleAddRuleClick = this.handleAddRuleClick.bind(this);
   }
 
@@ -39,7 +43,13 @@ export default class AddRule extends React.Component {
 
   renderRuleEmail() {
     if (this.state.emailOnFail) {
-      return <RuleEmail />;
+      return <RuleEmail/>;
+    }
+  }
+
+  renderRuleCountry() {
+    if (this.state.ruleType === RuleType.SOURCE_IP) {
+      return <RuleCountry onInit={() => []}/>;
     }
   }
 
@@ -68,6 +78,7 @@ export default class AddRule extends React.Component {
           </div>
         </div>
         {this.renderRuleEmail()}
+        {this.renderRuleCountry()}
       </div>
     );
   }

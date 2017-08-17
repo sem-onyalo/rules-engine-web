@@ -1,6 +1,8 @@
 import React from 'react';
 import AddRule from './addrule';
+import RuleType from './model/ruletype';
 import RuleEmail from './rule/ruleemail';
+import RuleCountry from './rule/rulecountry';
 import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import {spy} from 'sinon';
@@ -48,16 +50,6 @@ describe('<AddRule/>', () => {
     expect(wrapper.state('emailOnFail')).to.equal(true);
   });
 
-  it('should load RuleEmail component when the value in state changes to true', () => {
-    let wrapper = mount(<AddRule/>);
-    let input = wrapper.find('input[type="checkbox"]');
-    input.simulate('change', { target: { checked: true } });
-    wrapper.update();
-    expect(wrapper.containsAllMatchingElements([
-      <RuleEmail/>
-    ])).to.equal(true);
-  });
-
   it('should save rule type in state when changed', () => {
     let wrapper = mount(<AddRule/>);
     let select = wrapper.find('select');
@@ -80,5 +72,25 @@ describe('<AddRule/>', () => {
     button.simulate('click');
     expect(addRuleSpy.calledOnce).to.equal(true);
     expect(addRuleSpy.calledWith({ ruleType: 3, ruleScore: 20, emailOnFail: true })).to.equal(true);
+  });
+
+  it('should load RuleEmail component when the emailOnFail value in state changes to true', () => {
+    let wrapper = mount(<AddRule/>);
+    let input = wrapper.find('input[type="checkbox"]');
+    input.simulate('change', { target: { checked: true } });
+    wrapper.update();
+    expect(wrapper.containsAllMatchingElements([
+      <RuleEmail/>
+    ])).to.equal(true);
+  });
+
+  it('should load RuleCountry component when the rule type in state changes to RuleType.SOURCE_IP', () => {
+    let wrapper = mount(<AddRule/>);
+    let select = wrapper.find('select');
+    select.simulate('change', { target: { value: RuleType.SOURCE_IP.toString() }});
+    wrapper.update();
+    expect(wrapper.containsAllMatchingElements([
+      <RuleCountry/>
+    ])).to.equal(true);
   });
 });
