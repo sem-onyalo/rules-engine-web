@@ -37,7 +37,8 @@ export default class AddRule extends React.Component {
     this.props.onSubmit({
       ruleType: this.state.ruleType,
       ruleScore: this.state.ruleScore,
-      emailOnFail: this.state.emailOnFail
+      emailOnFail: this.state.emailOnFail,
+      parentRuleId: this.state.parentRuleId
     });
   }
 

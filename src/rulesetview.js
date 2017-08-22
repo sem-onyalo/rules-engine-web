@@ -8,8 +8,14 @@ export default class RuleSetView extends React.Component {
     this.state = {
       ruleSets: []
     };
+
     this.addRuleSet = this.addRuleSet.bind(this);
     this.initRuleSets = this.initRuleSets.bind(this);
+    this.handleAddRuleSubmit = this.handleAddRuleSubmit.bind(this);
+  }
+
+  handleAddRuleSubmit(args) {
+    this.props.onAddRule(args);
   }
 
   async addRuleSet(name) {
@@ -37,7 +43,7 @@ export default class RuleSetView extends React.Component {
     return (
       <div className="container-fluid">
         <AddRuleSet onSubmit={this.addRuleSet}/>
-        <ListRuleSets items={this.state.ruleSets}/>
+        <ListRuleSets items={this.state.ruleSets} onAddRule={this.handleAddRuleSubmit}/>
       </div>
     );
   }

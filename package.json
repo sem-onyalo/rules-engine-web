@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha -w util/test-browser.js $(find . -name '*.spec.js')",
     "start": "http-server & gulp watch",
-    "start-dev": "http-server & gulp watch"
+    "dev": "http-server & gulp watch"
   },
   "author": "Sem Onyalo",
   "license": "ISC",

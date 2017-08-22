@@ -8,8 +8,9 @@ export default class ListRuleSets extends React.Component {
       ruleSetIdsOfRenderedRules: []
     };
 
-    this.setRuleSetIdOfRenderedRules = this.setRuleSetIdOfRenderedRules.bind(this);
     this.renderRules = this.renderRules.bind(this);
+    this.handleAddRuleSubmit = this.handleAddRuleSubmit.bind(this);
+    this.setRuleSetIdOfRenderedRules = this.setRuleSetIdOfRenderedRules.bind(this);
   }
 
   setRuleSetIdOfRenderedRules(ruleSetId) {
@@ -18,11 +19,16 @@ export default class ListRuleSets extends React.Component {
     });
   }
 
+  handleAddRuleSubmit(ruleSetId, args) {
+    args.ruleSetId = ruleSetId;
+    this.props.onAddRule(args);
+  }
+
   renderRules(ruleSetId) {
     if (this.state.ruleSetIdsOfRenderedRules.indexOf(ruleSetId) >= 0) {
       return (
         <div className="rules-container">
-          <AddRule/>
+          <AddRule onSubmit={(args) => this.handleAddRuleSubmit(ruleSetId, args)}/>
         </div>
       );
     }

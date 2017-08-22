@@ -2,7 +2,8 @@ import React from 'react';
 import AddRule from './addrule';
 import ListRuleSets from './listrulesets';
 import {expect} from 'chai';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
+import {spy} from 'sinon';
 
 describe('<ListRuleSets/>', () => {
   it('should render zero items', () => {
@@ -50,5 +51,21 @@ describe('<ListRuleSets/>', () => {
     expect(wrapper.find('li').at(0).containsAllMatchingElements([
       <AddRule/>
     ])).to.equal(true);
+  });
+
+  it('should call onAddRule when Add Rule button is clicked', () => {
+    let addRuleSpy = spy();
+    let items = [[1, 'RuleSet A']];
+    let wrapper = mount(<ListRuleSets items={items} onAddRule={addRuleSpy}/>);
+    let button = wrapper.find('li').at(0).find('button'); // email on fail checkbox
+    button.simulate('click');
+    wrapper.update();
+
+    let addRuleComponent = wrapper.find('li').at(0).find(AddRule);
+    addRuleComponent.find('select').simulate('change', { target: { value: '1' } }); // rule type
+    addRuleComponent.find('input[type="text"]').simulate('change', { target: { value: '20' } }); // rule score
+    addRuleComponent.find('button').simulate('click');
+    expect(addRuleSpy.calledOnce).to.equal(true);
+    expect(addRuleSpy.calledWith({ ruleSetId: 1, ruleType: 1, ruleScore: 20, emailOnFail: false, parentRuleId: 0 })).to.equal(true);
   });
 });

@@ -71,7 +71,7 @@ describe('<AddRule/>', () => {
     let button = wrapper.find('button');
     button.simulate('click');
     expect(addRuleSpy.calledOnce).to.equal(true);
-    expect(addRuleSpy.calledWith({ ruleType: 3, ruleScore: 20, emailOnFail: true })).to.equal(true);
+    expect(addRuleSpy.calledWith({ ruleType: 3, ruleScore: 20, emailOnFail: true, parentRuleId: 0 })).to.equal(true);
   });
 
   it('should load RuleEmail component when the emailOnFail value in state changes to true', () => {

@@ -1,11 +1,12 @@
 import React from 'react';
+import AddRule from './addrule';
 import AddRuleSet from './addruleset';
 import Config from './config';
 import ListRuleSets from './listrulesets';
 import RuleSetView from './rulesetview';
 import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
-import {stub} from 'sinon';
+import {spy, stub} from 'sinon';
 
 describe('<RuleSetView/>', () => {
   let saveRuleSetStub;
@@ -15,7 +16,7 @@ describe('<RuleSetView/>', () => {
   });
 
   it('should render AddRuleSet and ListRuleSets', () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     expect(wrapper.containsAllMatchingElements([
       <AddRuleSet/>,
@@ -24,7 +25,7 @@ describe('<RuleSetView/>', () => {
   });
 
   it('should start with a list of empty rule sets if no rule sets from server', () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     expect(wrapper.state('ruleSets')).to.eql([]);
   });
@@ -37,7 +38,7 @@ describe('<RuleSetView/>', () => {
   });
 
   it('adds rule sets to the list', async () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     saveRuleSetStub = stub().returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     await wrapper.instance().addRuleSet('Rule Set A');
@@ -45,7 +46,7 @@ describe('<RuleSetView/>', () => {
   });
 
   it('should add rule set to server', () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     saveRuleSetStub = stub().returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     wrapper.instance().addRuleSet('Rule Set A');
@@ -53,7 +54,7 @@ describe('<RuleSetView/>', () => {
   });
 
   it('passes addRuleSet to AddRuleSet', () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     let addRuleSet = wrapper.find(AddRuleSet);
     let addRuleSetFunc = wrapper.instance().addRuleSet;
@@ -61,7 +62,7 @@ describe('<RuleSetView/>', () => {
   });
 
   it('passes a bound addRuleSet function to AddRuleSet', async () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     saveRuleSetStub = stub().returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     let addRuleSet = wrapper.find(AddRuleSet);
@@ -70,12 +71,30 @@ describe('<RuleSetView/>', () => {
   });
 
   it('renders the items', async () => {
-    let getRuleSetsStub = stub().returns([]);
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
     saveRuleSetStub.onCall(0).returns(Promise.resolve({ Id: 1, Name: 'Rule Set A' }));
     saveRuleSetStub.onCall(1).returns(Promise.resolve({ Id: 2, Name: 'Rule Set B' }));
     let wrapper = mount(<RuleSetView onInit={getRuleSetsStub} onSubmit={saveRuleSetStub}/>);
     await wrapper.instance().addRuleSet('Rule Set A');
     await wrapper.instance().addRuleSet('Rule Set B');
     expect(wrapper.find('li').length).to.equal(2);
+  });
+
+  it('passes handleAddRuleSubmit to ListRuleSets', () => {
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
+    let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub}/>);
+    let listRuleSets = wrapper.find(ListRuleSets);
+    let handleAddRuleSubmitFunc = wrapper.instance().handleAddRuleSubmit;
+    expect(listRuleSets.props()).to.have.property('onAddRule');
+    expect(listRuleSets.prop('onAddRule')).to.eql(handleAddRuleSubmitFunc);
+  });
+
+  it('should call onAddRule when handleAddRuleSubmit is invoked', () => {
+    let addRuleSpy = spy();
+    let getRuleSetsStub = stub().returns(Promise.resolve([]));
+    let wrapper = shallow(<RuleSetView onInit={getRuleSetsStub} onAddRule={addRuleSpy}/>);
+    wrapper.instance().handleAddRuleSubmit({ ruleSetId: 1, ruleType: 1, ruleScore: 20, emailOnFail: false, parentRuleId: 0 });
+    expect(addRuleSpy.calledOnce).to.equal(true);
+    expect(addRuleSpy.calledWith({ ruleSetId: 1, ruleType: 1, ruleScore: 20, emailOnFail: false, parentRuleId: 0 })).to.equal(true);
   });
 });
